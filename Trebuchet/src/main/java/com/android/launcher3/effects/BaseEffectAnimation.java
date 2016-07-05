@@ -3,8 +3,6 @@ package com.android.launcher3.effects;
 import android.view.View;
 
 import com.android.launcher3.PagedView;
-import com.android.launcher3.R;
-import com.android.launcher3.util.LogUtil;
 
 /**
  * Created by lcg on 16-5-3.
@@ -28,7 +26,7 @@ public abstract class BaseEffectAnimation {
         mPagedView.setEffectAnimation(animation);
     }
 
-    public abstract void screenScrolled(View v, float progress);
+    protected abstract void screenScrolled(View v, float progress);
 
     public static BaseEffectAnimation getEffectAnimationForType(PagedView mPagedView, int effectType) {
         switch (effectType) {
@@ -74,8 +72,8 @@ public abstract class BaseEffectAnimation {
         ZOOM_OUT(2),
         ROTATE_UP(3),
         ROTATE_DOWN(4),
-        CUBE_IN(5),
-        CUBE_OUT(6),
+        CUB_IN(5),
+        CUB_OUT(6),
         STACK(7),
         ACCORDION(8),
         FLIP(9),
@@ -104,9 +102,9 @@ public abstract class BaseEffectAnimation {
                 case 4:
                     return ROTATE_DOWN;
                 case 5:
-                    return CUBE_IN;
+                    return CUB_IN;
                 case 6:
-                    return CUBE_OUT;
+                    return CUB_OUT;
                 case 7:
                     return STACK;
                 case 8:
@@ -152,41 +150,5 @@ public abstract class BaseEffectAnimation {
         public String toString() {
             return String.valueOf(this.effectType);
         }
-
-        public static final int[] NAMES_RES_ID = {
-                R.string.effect_none,
-                R.string.effect_zoom_in,
-                R.string.effect_zoom_out,
-                R.string.effect_rotate_up,
-                R.string.effect_rotate_down,
-                R.string.effect_cube_in,
-                R.string.effect_cube_out,
-                R.string.effect_stack,
-                R.string.effect_accordion,
-                R.string.effect_flip,
-                R.string.effect_cylinder_in,
-                R.string.effect_cylinder_out,
-                R.string.effect_carousel,
-                R.string.effect_overview,
-                R.string.effect_cross
-        };
-
-        public static final int[] PREVIEW_RES_ID = {
-                R.drawable.effect_none,
-                R.drawable.effect_zoom_in,
-                R.drawable.effect_zoom_out,
-                R.drawable.effect_rotate_up,
-                R.drawable.effect_rotate_down,
-                R.drawable.effect_cube_in,
-                R.drawable.effect_cube_out,
-                R.drawable.effect_stack,
-                R.drawable.effect_accordion,
-                R.drawable.effect_flip,
-                R.drawable.effect_cylinder_in,
-                R.drawable.effect_cylinder_out,
-                R.drawable.effect_carousel,
-                R.drawable.effect_overview,
-                R.drawable.effect_cross
-        };
     }
 }
