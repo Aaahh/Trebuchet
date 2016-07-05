@@ -5,7 +5,7 @@ import android.view.View;
 import com.android.launcher3.PagedView;
 
 /**
- * Created by lcg on 16-5-3.
+ * Created by lcg on 16-5-3. I fd up
  */
 public abstract class BaseEffectAnimation {
 
