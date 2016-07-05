@@ -194,8 +194,8 @@ public class CellLayout extends ViewGroup implements BubbleTextShadowHandler {
         mWidthGap = mOriginalWidthGap = 0;
         mHeightGap = mOriginalHeightGap = 0;
         mMaxGap = Integer.MAX_VALUE;
-        mCountX = (int) grid.inv.numColumns;
-        mCountY = (int) grid.inv.numRows;
+        mCountX = grid.inv.numColumns;
+        mCountY = grid.inv.numRows;
         mOccupied = new boolean[mCountX][mCountY];
         mTmpOccupied = new boolean[mCountX][mCountY];
         mPreviousReorderDirection[0] = INVALID_DIRECTION;
@@ -323,11 +323,8 @@ public class CellLayout extends ViewGroup implements BubbleTextShadowHandler {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        if (mUseTouchHelper ||
-                (mInterceptTouchListener != null && mInterceptTouchListener.onTouch(this, ev))) {
-            return true;
-        }
-        return false;
+        return mUseTouchHelper ||
+                (mInterceptTouchListener != null && mInterceptTouchListener.onTouch(this, ev));
     }
 
     @Override
@@ -1915,7 +1912,7 @@ public class CellLayout extends ViewGroup implements BubbleTextShadowHandler {
      * the provided point and the provided cell
      */
     private void computeDirectionVector(float deltaX, float deltaY, int[] result) {
-        double angle = Math.atan(((float) deltaY) / deltaX);
+        double angle = Math.atan(deltaY / deltaX);
 
         result[0] = 0;
         result[1] = 0;
@@ -1929,9 +1926,7 @@ public class CellLayout extends ViewGroup implements BubbleTextShadowHandler {
 
     private void copyOccupiedArray(boolean[][] occupied) {
         for (int i = 0; i < mCountX; i++) {
-            for (int j = 0; j < mCountY; j++) {
-                occupied[i][j] = mOccupied[i][j];
-            }
+            System.arraycopy(mOccupied[i], 0, occupied[i], 0, mCountY);
         }
     }
 
@@ -2199,9 +2194,7 @@ public class CellLayout extends ViewGroup implements BubbleTextShadowHandler {
 
     private void commitTempPlacement() {
         for (int i = 0; i < mCountX; i++) {
-            for (int j = 0; j < mCountY; j++) {
-                mOccupied[i][j] = mTmpOccupied[i][j];
-            }
+            System.arraycopy(mTmpOccupied[i], 0, mOccupied[i], 0, mCountY);
         }
         int childCount = mShortcutsAndWidgets.getChildCount();
         for (int i = 0; i < childCount; i++) {
@@ -2859,8 +2852,8 @@ public class CellLayout extends ViewGroup implements BubbleTextShadowHandler {
                         leftMargin - rightMargin;
                 height = myCellVSpan * cellHeight + ((myCellVSpan - 1) * heightGap) -
                         topMargin - bottomMargin;
-                x = (int) (myCellX * (cellWidth + widthGap) + leftMargin);
-                y = (int) (myCellY * (cellHeight + heightGap) + topMargin);
+                x = myCellX * (cellWidth + widthGap) + leftMargin;
+                y = myCellY * (cellHeight + heightGap) + topMargin;
             }
         }
 

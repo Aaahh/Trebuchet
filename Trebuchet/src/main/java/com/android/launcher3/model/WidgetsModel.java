@@ -126,8 +126,8 @@ public class WidgetsModel {
                 // Ensure that all widgets we show can be added on a workspace of this size
                 int minSpanX = Math.min(widgetInfo.spanX, widgetInfo.minSpanX);
                 int minSpanY = Math.min(widgetInfo.spanY, widgetInfo.minSpanY);
-                if (minSpanX <= (int) idp.numColumns &&
-                    minSpanY <= (int) idp.numRows) {
+                if (minSpanX <= idp.numColumns &&
+                    minSpanY <= idp.numRows) {
                     componentName = widgetInfo.provider;
                     packageName = widgetInfo.provider.getPackageName();
                     userHandle = mAppWidgetMgr.getUser(widgetInfo);

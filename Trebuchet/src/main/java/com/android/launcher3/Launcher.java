@@ -246,7 +246,7 @@ public class Launcher extends Activity
     private static final int ON_ACTIVITY_RESULT_ANIMATION_DELAY = 500;
     private static final int ACTIVITY_START_DELAY = 1000;
 
-    private HashMap<Integer, Integer> mItemIdToViewId = new HashMap<Integer, Integer>();
+    private HashMap<Integer, Integer> mItemIdToViewId = new HashMap<>();
     private static final AtomicInteger sNextGeneratedId = new AtomicInteger(1);
 
     // How long to wait before the new-shortcut animation automatically pans the workspace
@@ -1036,7 +1036,7 @@ public class Launcher extends Activity
      */
     private long ensurePendingDropLayoutExists(long screenId) {
         CellLayout dropLayout =
-                (CellLayout) mWorkspace.getScreenWithId(screenId);
+                mWorkspace.getScreenWithId(screenId);
         if (dropLayout == null) {
             // it's possible that the add screen was removed because it was
             // empty and a re-bind occurred
@@ -1049,7 +1049,7 @@ public class Launcher extends Activity
 
     @Thunk void completeTwoStageWidgetDrop(final int resultCode, final int appWidgetId) {
         CellLayout cellLayout =
-                (CellLayout) mWorkspace.getScreenWithId(mPendingAddInfo.screenId);
+                mWorkspace.getScreenWithId(mPendingAddInfo.screenId);
         Runnable onCompleteRunnable = null;
         int animationType = 0;
 
@@ -1254,13 +1254,13 @@ public class Launcher extends Activity
     public interface CustomContentCallbacks {
         // Custom content is completely shown. {@code fromResume} indicates whether this was caused
         // by a onResume or by scrolling otherwise.
-        public void onShow(boolean fromResume);
+        void onShow(boolean fromResume);
 
         // Custom content is completely hidden
-        public void onHide();
+        void onHide();
 
         // Custom content scroll progress changed. From 0 (not showing) to 1 (fully showing).
-        public void onScrollProgressChanged(float progress);
+        void onScrollProgressChanged(float progress);
 
         // Indicates whether the user is allowed to scroll away from the custom content.
         boolean isScrollingAllowed();
@@ -1271,41 +1271,41 @@ public class Launcher extends Activity
         /**
          * Touch interaction leading to overscroll has begun
          */
-        public void onScrollInteractionBegin();
+        void onScrollInteractionBegin();
 
         /**
          * Touch interaction related to overscroll has ended
          */
-        public void onScrollInteractionEnd();
+        void onScrollInteractionEnd();
 
         /**
          * Scroll progress, between 0 and 100, when the user scrolls beyond the leftmost
          * screen (or in the case of RTL, the rightmost screen).
          */
-        public void onScrollChange(int progress, boolean rtl);
+        void onScrollChange(int progress, boolean rtl);
 
         /**
          * Screen has stopped scrolling
          */
-        public void onScrollSettled();
+        void onScrollSettled();
 
         /**
          * This method can be called by the Launcher in order to force the LauncherOverlay
          * to exit fully immersive mode.
          */
-        public void forceExitFullImmersion();
+        void forceExitFullImmersion();
     }
 
     public interface LauncherSearchCallbacks {
         /**
          * Called when the search overlay is shown.
          */
-        public void onSearchOverlayOpened();
+        void onSearchOverlayOpened();
 
         /**
          * Called when the search overlay is dismissed.
          */
-        public void onSearchOverlayClosed();
+        void onSearchOverlayClosed();
     }
 
     public interface LauncherOverlayCallbacks {
@@ -1313,7 +1313,7 @@ public class Launcher extends Activity
          * This method indicates whether a call to {@link #enterFullImmersion()} will succeed,
          * however it doesn't modify any state within the launcher.
          */
-        public boolean canEnterFullImmersion();
+        boolean canEnterFullImmersion();
 
         /**
          * Should be called to tell Launcher that the LauncherOverlay will take over interaction,
@@ -1324,13 +1324,13 @@ public class Launcher extends Activity
          *          handling all interaction. If false, the LauncherOverlay should cancel any
          *
          */
-        public boolean enterFullImmersion();
+        boolean enterFullImmersion();
 
         /**
          * Must be called when exiting fully immersive mode. Indicates to Launcher that it has
          * full control over UI and state.
          */
-        public void exitFullImmersion();
+        void exitFullImmersion();
     }
 
     class LauncherOverlayCallbacksImpl implements LauncherOverlayCallbacks {
@@ -3623,7 +3623,7 @@ public class Launcher extends Activity
         // There was a one-off crash where the folder had a parent already.
         if (folder.getParent() == null) {
             mDragLayer.addView(folder);
-            mDragController.addDropTarget((DropTarget) folder);
+            mDragController.addDropTarget(folder);
         } else {
             Log.w(TAG, "Opening folder (" + folder + ") which already has a parent (" +
                     folder.getParent() + ").");
@@ -4974,11 +4974,7 @@ public class Launcher extends Activity
         PackageManager pm = getPackageManager();
         try {
             ApplicationInfo ai = pm.getApplicationInfo(getComponentName().getPackageName(), 0);
-            if ((ai.flags & ApplicationInfo.FLAG_SYSTEM) != 0) {
-                return true;
-            } else {
-                return false;
-            }
+            return (ai.flags & ApplicationInfo.FLAG_SYSTEM) != 0;
         } catch (NameNotFoundException e) {
             e.printStackTrace();
             return false;
@@ -5403,6 +5399,6 @@ public class Launcher extends Activity
 }
 
 interface DebugIntents {
-    static final String DELETE_DATABASE = "com.android.launcher3.action.DELETE_DATABASE";
-    static final String MIGRATE_DATABASE = "com.android.launcher3.action.MIGRATE_DATABASE";
+    String DELETE_DATABASE = "com.android.launcher3.action.DELETE_DATABASE";
+    String MIGRATE_DATABASE = "com.android.launcher3.action.MIGRATE_DATABASE";
 }

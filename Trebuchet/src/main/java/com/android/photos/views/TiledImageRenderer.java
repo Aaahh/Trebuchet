@@ -126,22 +126,22 @@ public class TiledImageRenderer {
     /**
      * Interface for providing tiles to a {@link TiledImageRenderer}
      */
-    public static interface TileSource {
+    public interface TileSource {
 
         /**
          * If the source does not care about the tile size, it should use
          * {@link TiledImageRenderer#suggestedTileSize(Context)}
          */
-        public int getTileSize();
-        public int getImageWidth();
-        public int getImageHeight();
-        public int getRotation();
+        int getTileSize();
+        int getImageWidth();
+        int getImageHeight();
+        int getRotation();
 
         /**
          * Return a Preview image if available. This will be used as the base layer
          * if higher res tiles are not yet available
          */
-        public BasicTexture getPreview();
+        BasicTexture getPreview();
 
         /**
          * The tile returned by this method can be specified this way: Assuming
@@ -156,7 +156,7 @@ public class TiledImageRenderer {
          *
          * The method would be called by the decoder thread.
          */
-        public Bitmap getTile(int level, int x, int y, Bitmap reuse);
+        Bitmap getTile(int level, int x, int y, Bitmap reuse);
     }
 
     public static int suggestedTileSize(Context context) {

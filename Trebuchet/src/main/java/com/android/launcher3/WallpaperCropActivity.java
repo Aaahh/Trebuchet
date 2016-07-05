@@ -361,7 +361,7 @@ public class WallpaperCropActivity extends BaseActivity implements Handler.Callb
         Point inSize = mCropView.getSourceDimensions();
 
         int cropRotation = mCropView.getImageRotation();
-        float cropScale = mCropView.getWidth() / (float) cropRect.width();
+        float cropScale = mCropView.getWidth() / cropRect.width();
 
 
         Matrix rotateMatrix = new Matrix();
@@ -415,8 +415,8 @@ public class WallpaperCropActivity extends BaseActivity implements Handler.Callb
             cropRect.top -= expandHeight;
             cropRect.bottom += expandHeight;
         }
-        final int outWidth = (int) Math.round(cropRect.width() * cropScale);
-        final int outHeight = (int) Math.round(cropRect.height() * cropScale);
+        final int outWidth = Math.round(cropRect.width() * cropScale);
+        final int outHeight = Math.round(cropRect.height() * cropScale);
 
         Runnable onEndCrop = new Runnable() {
             public void run() {

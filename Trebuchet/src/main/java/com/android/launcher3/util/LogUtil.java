@@ -179,15 +179,13 @@ public class LogUtil {
     }
     
     private static String createLog(String... msg) {
-		StringBuffer buffer = new StringBuffer();
-		buffer.append("[");
-		buffer.append(methodName);
-		buffer.append(":");
-		buffer.append(lineNumber);
-		buffer.append("]");
-		buffer.append(combineLogMsg(msg));
 
-		return buffer.toString();
+        return "[" +
+                methodName +
+                ":" +
+                lineNumber +
+                "]" +
+                combineLogMsg(msg);
 	}
 	
 	private static void getMethodNames(StackTraceElement[] sElements){

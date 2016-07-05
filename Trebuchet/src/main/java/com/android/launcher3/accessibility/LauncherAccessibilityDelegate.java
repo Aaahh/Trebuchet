@@ -389,7 +389,7 @@ public class LauncherAccessibilityDelegate extends AccessibilityDelegate impleme
         }
     }
 
-    public static interface AccessibilityDragSource {
+    public interface AccessibilityDragSource {
         void startDrag(CellLayout.CellInfo cellInfo, boolean accessible);
 
         void enableAccessibleDrag(boolean enable);

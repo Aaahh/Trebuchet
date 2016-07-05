@@ -616,7 +616,7 @@ public class BubbleTextView extends TextView
     /**
      * Interface to be implemented by the grand parent to allow click shadow effect.
      */
-    public static interface BubbleTextShadowHandler {
+    public interface BubbleTextShadowHandler {
         void setPressedIcon(BubbleTextView icon, Bitmap background);
     }
 }

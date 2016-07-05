@@ -445,7 +445,7 @@ public class PinnedHeaderListView extends AutoScrollListView
             return true;
         }
         return super.onTouchEvent(ev);
-    };
+    }
 
     private boolean smoothScrollToPartition(int partition) {
         final int position = mAdapter.getScrollPositionForHeader(partition);

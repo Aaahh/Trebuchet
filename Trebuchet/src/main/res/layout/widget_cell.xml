@@ -36,7 +36,7 @@
         <!-- The name of the widget. -->
         <TextView
             android:id="@+id/widget_name"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ellipsize="end"

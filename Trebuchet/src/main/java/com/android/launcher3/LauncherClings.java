@@ -239,11 +239,7 @@ class LauncherClings implements OnClickListener {
                 return false;
             }
         }
-        if (Settings.Secure.getInt(mLauncher.getContentResolver(), SKIP_FIRST_USE_HINTS, 0)
-                == 1) {
-            return false;
-        }
-        return true;
+        return Settings.Secure.getInt(mLauncher.getContentResolver(), SKIP_FIRST_USE_HINTS, 0) != 1;
     }
 
     public boolean shouldShowFirstRunOrMigrationClings() {

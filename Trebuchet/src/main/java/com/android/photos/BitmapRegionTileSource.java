@@ -156,7 +156,8 @@ public class BitmapRegionTileSource implements TiledImageRenderer.TileSource {
         private SimpleBitmapRegionDecoder mDecoder;
         private Bitmap mPreview;
         private int mRotation;
-        public enum State { NOT_LOADED, LOADED, ERROR_LOADING };
+        public enum State { NOT_LOADED, LOADED, ERROR_LOADING }
+
         private State mState = State.NOT_LOADED;
 
         public boolean loadInBackground(InBitmapProvider bitmapProvider) {

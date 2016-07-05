@@ -144,26 +144,17 @@ public class DragLayer extends InsettableFrameLayout {
 
     private boolean isEventOverFolderTextRegion(Folder folder, MotionEvent ev) {
         getDescendantRectRelativeToSelf(folder.getEditTextRegion(), mHitRect);
-        if (mHitRect.contains((int) ev.getX(), (int) ev.getY())) {
-            return true;
-        }
-        return false;
+        return mHitRect.contains((int) ev.getX(), (int) ev.getY());
     }
 
     private boolean isEventOverFolder(Folder folder, MotionEvent ev) {
         getDescendantRectRelativeToSelf(folder, mHitRect);
-        if (mHitRect.contains((int) ev.getX(), (int) ev.getY())) {
-            return true;
-        }
-        return false;
+        return mHitRect.contains((int) ev.getX(), (int) ev.getY());
     }
 
     private boolean isEventOverDropTargetBar(MotionEvent ev) {
         getDescendantRectRelativeToSelf(mLauncher.getSearchDropTargetBar(), mHitRect);
-        if (mHitRect.contains((int) ev.getX(), (int) ev.getY())) {
-            return true;
-        }
-        return false;
+        return mHitRect.contains((int) ev.getX(), (int) ev.getY());
     }
 
     public void setBlockTouch(boolean block) {
@@ -903,7 +894,7 @@ public class DragLayer extends InsettableFrameLayout {
         // Draw the background below children.
         if (mBackgroundAlpha > 0.0f) {
             int alpha = (int) (mBackgroundAlpha * 255);
-            canvas.drawColor((alpha << 24) | SCRIM_COLOR);
+            canvas.drawColor((alpha << 24));
         }
 
         super.dispatchDraw(canvas);
@@ -960,6 +951,6 @@ public class DragLayer extends InsettableFrameLayout {
     }
 
     public interface TouchCompleteListener {
-        public void onTouchComplete();
+        void onTouchComplete();
     }
 }

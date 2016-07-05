@@ -187,41 +187,41 @@ public class LauncherModel extends BroadcastReceiver
     @Thunk final UserManagerCompat mUserManager;
 
     public interface Callbacks {
-        public boolean setLoadOnResume();
-        public int getCurrentWorkspaceScreen();
-        public void startBinding();
-        public void bindItems(ArrayList<ItemInfo> shortcuts, int start, int end,
-                              boolean forceAnimateIcons);
-        public void bindScreens(ArrayList<Long> orderedScreenIds);
-        public void bindAddScreens(ArrayList<Long> orderedScreenIds);
-        public void bindFolders(LongArrayMap<FolderInfo> folders);
-        public void finishBindingItems();
-        public void bindAppWidget(LauncherAppWidgetInfo info);
-        public void bindAllApplications(ArrayList<AppInfo> apps);
-        public void bindAppsAdded(ArrayList<Long> newScreens,
-                                  ArrayList<ItemInfo> addNotAnimated,
-                                  ArrayList<ItemInfo> addAnimated,
-                                  ArrayList<AppInfo> addedApps);
-        public void bindAppsUpdated(ArrayList<AppInfo> apps);
-        public void bindShortcutsChanged(ArrayList<ShortcutInfo> updated,
-                ArrayList<ShortcutInfo> removed, UserHandleCompat user);
-        public void bindWidgetsRestored(ArrayList<LauncherAppWidgetInfo> widgets);
-        public void bindRestoreItemsChange(HashSet<ItemInfo> updates);
-        public void bindComponentsRemoved(ArrayList<String> packageNames,
-                        ArrayList<AppInfo> appInfos, UserHandleCompat user, int reason);
-        public void bindPackagesUpdated(ArrayList<Object> widgetsAndShortcuts);
-        public void bindAllPackages(WidgetsModel model);
-        public void bindSearchProviderChanged();
-        public void bindComponentsUnavailable(ArrayList<String> packageNames,
-                ArrayList<AppInfo> appInfos);
-        public void bindComponentsAvailable(ArrayList<ItemInfo> itemInfos);
-        public boolean isAllAppsButtonRank(int rank);
-        public void onPageBoundSynchronously(int page);
-        public void dumpLogsToLocalData();
+        boolean setLoadOnResume();
+        int getCurrentWorkspaceScreen();
+        void startBinding();
+        void bindItems(ArrayList<ItemInfo> shortcuts, int start, int end,
+                       boolean forceAnimateIcons);
+        void bindScreens(ArrayList<Long> orderedScreenIds);
+        void bindAddScreens(ArrayList<Long> orderedScreenIds);
+        void bindFolders(LongArrayMap<FolderInfo> folders);
+        void finishBindingItems();
+        void bindAppWidget(LauncherAppWidgetInfo info);
+        void bindAllApplications(ArrayList<AppInfo> apps);
+        void bindAppsAdded(ArrayList<Long> newScreens,
+                           ArrayList<ItemInfo> addNotAnimated,
+                           ArrayList<ItemInfo> addAnimated,
+                           ArrayList<AppInfo> addedApps);
+        void bindAppsUpdated(ArrayList<AppInfo> apps);
+        void bindShortcutsChanged(ArrayList<ShortcutInfo> updated,
+                                  ArrayList<ShortcutInfo> removed, UserHandleCompat user);
+        void bindWidgetsRestored(ArrayList<LauncherAppWidgetInfo> widgets);
+        void bindRestoreItemsChange(HashSet<ItemInfo> updates);
+        void bindComponentsRemoved(ArrayList<String> packageNames,
+                                   ArrayList<AppInfo> appInfos, UserHandleCompat user, int reason);
+        void bindPackagesUpdated(ArrayList<Object> widgetsAndShortcuts);
+        void bindAllPackages(WidgetsModel model);
+        void bindSearchProviderChanged();
+        void bindComponentsUnavailable(ArrayList<String> packageNames,
+                                       ArrayList<AppInfo> appInfos);
+        void bindComponentsAvailable(ArrayList<ItemInfo> itemInfos);
+        boolean isAllAppsButtonRank(int rank);
+        void onPageBoundSynchronously(int page);
+        void dumpLogsToLocalData();
     }
 
     public interface ItemInfoFilter {
-        public boolean filterItem(ItemInfo parent, ItemInfo info, ComponentName cn);
+        boolean filterItem(ItemInfo parent, ItemInfo info, ComponentName cn);
     }
 
     LauncherModel(LauncherAppState app, IconCache iconCache, AppFilter appFilter) {
@@ -417,8 +417,8 @@ public class LauncherModel extends BroadcastReceiver
             int[] xy, int spanX, int spanY) {
         LauncherAppState app = LauncherAppState.getInstance();
         InvariantDeviceProfile profile = app.getInvariantDeviceProfile();
-        final int xCount = (int) profile.numColumns;
-        final int yCount = (int) profile.numRows;
+        final int xCount = profile.numColumns;
+        final int yCount = profile.numRows;
         boolean[][] occupied = new boolean[xCount][yCount];
         if (occupiedPos != null) {
             for (ItemInfo r : occupiedPos) {
@@ -1201,7 +1201,7 @@ public class LauncherModel extends BroadcastReceiver
                                 sBgWorkspaceItems.remove(item);
                                 break;
                             case LauncherSettings.Favorites.ITEM_TYPE_APPWIDGET:
-                                sBgAppWidgets.remove((LauncherAppWidgetInfo) item);
+                                sBgAppWidgets.remove(item);
                                 saveWidgetCount(context);
                                 break;
                         }
@@ -1763,7 +1763,7 @@ public class LauncherModel extends BroadcastReceiver
                     return true;
                 }
             } else if (item.container == LauncherSettings.Favorites.CONTAINER_DESKTOP) {
-                if (!workspaceScreens.contains((Long) item.screenId)) {
+                if (!workspaceScreens.contains(item.screenId)) {
                     // The item has an invalid screen id.
                     return false;
                 }
@@ -2637,8 +2637,8 @@ public class LauncherModel extends BroadcastReceiver
             Collections.sort(workspaceItems, new Comparator<ItemInfo>() {
                 @Override
                 public int compare(ItemInfo lhs, ItemInfo rhs) {
-                    int cellCountX = (int) profile.numColumns;
-                    int cellCountY = (int) profile.numRows;
+                    int cellCountX = profile.numColumns;
+                    int cellCountY = profile.numRows;
                     int screenOffset = cellCountX * cellCountY;
                     int containerOffset = screenOffset * (Launcher.SCREEN_COUNT + 1); // +1 hotseat
                     long lr = (lhs.container * containerOffset + lhs.screenId * screenOffset +

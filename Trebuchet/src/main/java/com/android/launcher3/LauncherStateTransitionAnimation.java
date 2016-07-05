@@ -25,15 +25,14 @@ import android.animation.TimeInterpolator;
 import android.annotation.SuppressLint;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 
 import com.android.launcher3.allapps.AllAppsContainerView;
 import com.android.launcher3.util.LogUtil;
-import com.android.launcher3.util.UiThreadCircularReveal;
 import com.android.launcher3.util.Thunk;
+import com.android.launcher3.util.UiThreadCircularReveal;
 import com.android.launcher3.widget.WidgetsContainerView;
 
 import java.util.HashMap;

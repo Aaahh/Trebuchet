@@ -65,7 +65,7 @@ public class TiledImageView extends FrameLayout {
     // -------------------------
     // Guarded by mLock
     // -------------------------
-    protected Object mLock = new Object();
+    protected final Object mLock = new Object();
     protected ImageRendererWrapper mRenderer;
 
     public TiledImageView(Context context) {

@@ -2,7 +2,6 @@ package com.android.launcher3.widget;
 
 import android.appwidget.AppWidgetHostView;
 import android.appwidget.AppWidgetManager;
-import android.content.Context;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
@@ -104,7 +103,7 @@ public class WidgetHostViewLoader implements DragListener {
                     return;
                 }
                 AppWidgetHostView hostView = mLauncher.getAppWidgetHost().createView(
-                        (Context) mLauncher, mWidgetLoadingId, pInfo);
+                        mLauncher, mWidgetLoadingId, pInfo);
                 mInfo.boundWidget = hostView;
 
                 // We used up the widget Id in binding the above view.

@@ -42,7 +42,7 @@ import java.io.InputStream;
 public class BitmapCropTask extends AsyncTask<Void, Void, Boolean> {
 
     public interface OnBitmapCroppedHandler {
-        public void onBitmapCropped(byte[] imageBytes);
+        void onBitmapCropped(byte[] imageBytes);
     }
 
     private static final int DEFAULT_COMPRESS_QUALITY = 90;

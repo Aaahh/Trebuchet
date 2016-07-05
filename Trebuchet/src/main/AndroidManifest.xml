@@ -38,7 +38,7 @@
     <permission
         android:name="com.android.launcher3.permission.WRITE_SETTINGS"
         android:permissionGroup="android.permission-group.SYSTEM_TOOLS"
-        android:protectionLevel="signatureOrSystem"
+        android:protectionLevel="normal"
         android:label="@string/permlab_write_settings"
         android:description="@string/permdesc_write_settings"/>
     <permission
@@ -47,7 +47,7 @@
         />
     <permission
         android:name="com.android.launcher3.permission.RECEIVE_FIRST_LOAD_BROADCAST"
-        android:protectionLevel="signatureOrSystem" />
+        android:protectionLevel="normal" />
 
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.SET_WALLPAPER" />

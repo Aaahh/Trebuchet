@@ -94,4 +94,4 @@ public class WidgetsAndShortcutNameComparator implements Comparator<Object> {
             return Utilities.trim(shortcutInfo.loadLabel(mPackageManager));
         }
     }
-};
+}

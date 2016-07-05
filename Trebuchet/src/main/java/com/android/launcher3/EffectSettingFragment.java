@@ -99,7 +99,7 @@ public class EffectSettingFragment extends Fragment {
     }
 
     private void updateEffectPreview(BaseEffectAnimation.Effect effect) {
-        mImageView.setBackgroundResource(effect.getEffectPreviewResId(effect.getEffectType()));
+        mImageView.setBackgroundResource(BaseEffectAnimation.Effect.getEffectPreviewResId(effect.getEffectType()));
     }
 
     private void setCleared(View v) {

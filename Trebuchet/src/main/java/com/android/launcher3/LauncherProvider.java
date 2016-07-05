@@ -1187,10 +1187,7 @@ public class LauncherProvider extends ContentProvider {
 
             // Add screen id if not present
             long screenId = values.getAsLong(LauncherSettings.Favorites.SCREEN);
-            if (!addScreenIdIfNecessary(screenId)) {
-                return false;
-            }
-            return true;
+            return addScreenIdIfNecessary(screenId);
         }
 
         // Returns true of screen id exists, or if successfully added
@@ -1319,8 +1316,8 @@ public class LauncherProvider extends ContentProvider {
 
                         final LauncherAppState app = LauncherAppState.getInstance();
                         final InvariantDeviceProfile profile = app.getInvariantDeviceProfile();
-                        final int width = (int) profile.numColumns;
-                        final int height = (int) profile.numRows;
+                        final int width = profile.numColumns;
+                        final int height = profile.numRows;
                         final int hotseatWidth = (int) profile.numHotseatIcons;
 
                         final HashSet<String> seenIntents = new HashSet<String>(c.getCount());

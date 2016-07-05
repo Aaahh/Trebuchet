@@ -18,10 +18,9 @@
 */
 -->
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:launcher="http://schemas.android.com/apk/res-auto"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent">
 
     <com.android.launcher3.CropView
         android:id="@+id/cropView"
@@ -88,4 +87,4 @@
             android:background="@drawable/tile_shadow_bottom" />
     </LinearLayout>
 
-</FrameLayout>
+</merge>
