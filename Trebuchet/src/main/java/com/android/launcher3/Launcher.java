@@ -2817,7 +2817,7 @@ public class Launcher extends Activity
             Fragment gridFragment = getFragmentManager().findFragmentByTag(
                     DynamicGridSizeFragment.DYNAMIC_GRID_SIZE_FRAGMENT);
             if (gridFragment != null) {
-                mDynamicGridSizeFragment.setSize();
+                ((DynamicGridSizeFragment) gridFragment).setSize();
                 unlockScreenOrientation(true);
             }
             else {
