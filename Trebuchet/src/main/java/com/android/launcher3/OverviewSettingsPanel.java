@@ -4,7 +4,6 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.widget.ListView;
-
 import com.android.launcher3.list.PinnedHeaderListView;
 import com.android.launcher3.list.SettingsPinnedHeaderAdapter;
 
@@ -34,14 +33,14 @@ public class OverviewSettingsPanel {
                 .findViewById(R.id.settings_home_screen_listview);
         mListView.setOverScrollMode(ListView.OVER_SCROLL_NEVER);
         Resources res = mLauncher.getResources();
-        String[] headers = new String[]{
+        String[] headers = new String[] {
                 res.getString(R.string.home_screen_settings),
                 res.getString(R.string.drawer_settings),
                 res.getString(R.string.app_settings)};
 
-        String[] valuesApp = new String[]{
-                res.getString(R.string.larger_icons_text)/*,
-                res.getString(R.string.protected_app_settings)*/};
+        String[] valuesApp = new String[] {
+                res.getString(R.string.larger_icons_text),
+                res.getString(R.string.protected_app_settings)};
 
         mSettingsAdapter = new SettingsPinnedHeaderAdapter(mLauncher);
         mSettingsAdapter.setHeaders(headers);
@@ -54,8 +53,7 @@ public class OverviewSettingsPanel {
                 createCursor(headers[0], getValuesHome()));
         mSettingsAdapter.changeCursor(DRAWER_SETTINGS_POSITION,
                 createCursor(headers[1], getValuesDrawer()));
-        mSettingsAdapter.changeCursor(APP_SETTINGS_POSITION,
-                createCursor(headers[2], valuesApp));
+        mSettingsAdapter.changeCursor(APP_SETTINGS_POSITION, createCursor(headers[2], valuesApp));
         mListView.setAdapter(mSettingsAdapter);
     }
 
@@ -75,9 +73,7 @@ public class OverviewSettingsPanel {
                 res.getString(R.string.icon_labels),
                 res.getString(R.string.scrolling_wallpaper),
                 res.getString(R.string.grid_size_text),
-                res.getString(R.string.allow_rotation_title),
-                res.getString(R.string.allow_remote_folder),
-                res.getString(R.string.workspace_anim)}));
+                res.getString(R.string.allow_rotation_title)}));
 
         // Add additional external settings.
         RemoteFolderManager.onInitializeHomeSettings(values, mLauncher);

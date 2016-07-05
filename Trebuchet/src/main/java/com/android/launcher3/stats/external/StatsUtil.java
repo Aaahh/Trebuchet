@@ -16,6 +16,7 @@
 
 package com.android.launcher3.stats.external;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -23,6 +24,8 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
+
+import com.android.launcher3.LauncherApplication;
 import com.android.launcher3.stats.util.Logger;
 
 /**
@@ -38,42 +41,6 @@ public class StatsUtil {
 
     // Constants
     private static final String KEY_TRACKING_ID = "tracking_id";
-    private static final String ANALYTIC_INTENT = "com.cyngn.stats.action.SEND_ANALYTIC_EVENT";
-    private static final String STATS_PACKAGE = "com.cyngn.stats";
-
-    /**
-     * Checks if stats collection is enabled
-     *
-     * @param context {@link android.content.Context}
-     * @return {@link java.lang.Boolean}
-     * @throws IllegalArgumentException {@link IllegalArgumentException}
-     */
-    public static boolean isStatsCollectionEnabled(Context context)
-            throws IllegalArgumentException {
-        return isStatsPackageInstalledAndSystemApp(context);
-    }
-
-    /**
-     * Checks if the stats package is installed
-     *
-     * @param context {@link android.content.Context}
-     * @return {@link Boolean {@link Boolean {@link Boolean {@link Boolean}}}}
-     */
-    private static boolean isStatsPackageInstalledAndSystemApp(Context context)
-            throws IllegalArgumentException {
-        if (context == null) {
-            throw new IllegalArgumentException("'context' cannot be null!");
-        }
-        try {
-            PackageInfo pi = context.getPackageManager().getPackageInfo(STATS_PACKAGE, 0);
-            boolean isSystemApp = (pi.applicationInfo.flags &
-                    (ApplicationInfo.FLAG_SYSTEM | ApplicationInfo.FLAG_UPDATED_SYSTEM_APP)) != 0;
-            return pi.applicationInfo.enabled && isSystemApp;
-        } catch (PackageManager.NameNotFoundException e) {
-            Log.e(TAG, "stats not found!");
-            return false;
-        }
-    }
 
     /**
      * Send an event to CyangenStats
@@ -90,13 +57,7 @@ public class StatsUtil {
         if (trackingBundle == null) {
             throw new IllegalArgumentException("'trackingBundle' cannot be null!");
         }
-        if (!isStatsCollectionEnabled(context)) {
-            Logger.logd(TAG, "Stats collection: DISABLED!");
-            return;
-        }
         Logger.logd(TAG, "Stats collection: ENABLED!");
-
-        Intent newIntent = new Intent(ANALYTIC_INTENT);
 
         if (!trackingBundle.containsKey(KEY_TRACKING_ID)) {
             Logger.logd(TAG, "No tracking id in bundle");
@@ -105,8 +66,6 @@ public class StatsUtil {
             if (trackingBundle.containsKey(TrackingBundle.KEY_EVENT_CATEGORY)
                     && trackingBundle.containsKey(TrackingBundle.KEY_EVENT_ACTION)) {
                 Logger.logd(TAG, trackingBundle.toString());
-                newIntent.putExtras(trackingBundle);
-                context.sendBroadcast(newIntent);
             } else {
                 Logger.logd(TAG, "Not a valid tracking bundle");
             }

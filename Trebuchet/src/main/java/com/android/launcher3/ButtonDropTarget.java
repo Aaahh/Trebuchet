@@ -49,21 +49,20 @@ public abstract class ButtonDropTarget extends TextView
     private static int DRAG_VIEW_DROP_DURATION = 285;
 
     protected Launcher mLauncher;
+    private int mBottomDragPadding;
     protected SearchDropTargetBar mSearchDropTargetBar;
-    /**
-     * Whether this drop target is active for the current drag
-     */
+
+    /** Whether this drop target is active for the current drag */
     protected boolean mActive;
-    /**
-     * The paint applied to the drag view on hover
-     */
+
+    /** The paint applied to the drag view on hover */
     protected int mHoverColor = 0;
+
     protected ColorStateList mOriginalTextColor;
     protected Drawable mDrawable;
-    @Thunk
-    ColorMatrix mSrcFilter, mDstFilter, mCurrentFilter;
-    private int mBottomDragPadding;
+
     private AnimatorSet mCurrentColorAnim;
+    @Thunk ColorMatrix mSrcFilter, mDstFilter, mCurrentFilter;
 
 
     public ButtonDropTarget(Context context, AttributeSet attrs) {
@@ -109,8 +108,7 @@ public abstract class ButtonDropTarget extends TextView
     }
 
     @Override
-    public void onFlingToDelete(DragObject d, PointF vec) {
-    }
+    public void onFlingToDelete(DragObject d, PointF vec) { }
 
     @Override
     public final void onDragEnter(DragObject d) {
@@ -186,7 +184,7 @@ public abstract class ButtonDropTarget extends TextView
         }
     }
 
-    @Override
+	@Override
     public final void onDragStart(DragSource source, Object info, int dragAction) {
         mActive = supportsDrop(source, info);
         mDrawable.setColorFilter(null);
@@ -246,11 +244,9 @@ public abstract class ButtonDropTarget extends TextView
     }
 
     @Override
-    public void prepareAccessibilityDrop() {
-    }
+    public void prepareAccessibilityDrop() { }
 
-    @Thunk
-    abstract void completeDrop(DragObject d);
+    @Thunk abstract void completeDrop(DragObject d);
 
     @Override
     public void getHitRectRelativeToDragLayer(android.graphics.Rect outRect) {
@@ -269,25 +265,28 @@ public abstract class ButtonDropTarget extends TextView
         Rect to = new Rect();
         dragLayer.getViewRectRelativeToSelf(this, to);
 
+        final int width = drawableWidth;
+        final int height = drawableHeight;
+
         final int left;
         final int right;
 
         if (Utilities.isRtl(getResources())) {
             right = to.right - getPaddingRight();
-            left = right - drawableWidth;
+            left = right - width;
         } else {
             left = to.left + getPaddingLeft();
-            right = left + drawableWidth;
+            right = left + width;
         }
 
-        final int top = to.top + (getMeasuredHeight() - drawableHeight) / 2;
-        final int bottom = top + drawableHeight;
+        final int top = to.top + (getMeasuredHeight() - height) / 2;
+        final int bottom = top +  height;
 
         to.set(left, top, right, bottom);
 
         // Center the destination rect about the trash icon
-        final int xOffset = -(viewWidth - drawableWidth) / 2;
-        final int yOffset = -(viewHeight - drawableHeight) / 2;
+        final int xOffset = (int) -(viewWidth - width) / 2;
+        final int yOffset = (int) -(viewHeight - height) / 2;
         to.offset(xOffset, yOffset);
 
         return to;
@@ -309,7 +308,7 @@ public abstract class ButtonDropTarget extends TextView
     @Override
     public void onClick(View v) {
         LauncherAppState.getInstance().getAccessibilityDelegate()
-                .handleAccessibleDrop(this, null, getAccessibilityDropConfirmation());
+            .handleAccessibleDrop(this, null, getAccessibilityDropConfirmation());
     }
 
     public int getTextColor() {

@@ -1,18 +1,13 @@
 
 package com.android.launcher3.model;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.pm.ResolveInfo;
 import android.util.Log;
 
 import com.android.launcher3.AppFilter;
+import com.android.launcher3.AppInfo;
 import com.android.launcher3.IconCache;
 import com.android.launcher3.InvariantDeviceProfile;
 import com.android.launcher3.ItemInfo;
@@ -23,6 +18,12 @@ import com.android.launcher3.Utilities;
 import com.android.launcher3.compat.AlphabeticIndexCompat;
 import com.android.launcher3.compat.AppWidgetManagerCompat;
 import com.android.launcher3.compat.UserHandleCompat;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Widgets data model that is used by the adapters of the widget views and controllers.
@@ -126,8 +127,8 @@ public class WidgetsModel {
                 // Ensure that all widgets we show can be added on a workspace of this size
                 int minSpanX = Math.min(widgetInfo.spanX, widgetInfo.minSpanX);
                 int minSpanY = Math.min(widgetInfo.spanY, widgetInfo.minSpanY);
-                if (minSpanX <= idp.numColumns &&
-                    minSpanY <= idp.numRows) {
+                if (minSpanX <= (int) idp.numColumns &&
+                    minSpanY <= (int) idp.numRows) {
                     componentName = widgetInfo.provider;
                     packageName = widgetInfo.provider.getPackageName();
                     userHandle = mAppWidgetMgr.getUser(widgetInfo);

@@ -82,7 +82,7 @@ public class AutoInstallsLayout {
 
         // Try with grid size and hotseat count
         String layoutName = String.format(Locale.ENGLISH, FORMATTED_LAYOUT_RES_WITH_HOSTEAT,
-                grid.numColumns, grid.numRows, (int) grid.numHotseatIcons);
+                (int) grid.numColumns, (int) grid.numRows, (int) grid.numHotseatIcons);
         int layoutId = targetRes.getIdentifier(layoutName, "xml", pkg);
 
         // Try with only grid size
@@ -90,7 +90,7 @@ public class AutoInstallsLayout {
             Log.d(TAG, "Formatted layout: " + layoutName
                     + " not found. Trying layout without hosteat");
             layoutName = String.format(Locale.ENGLISH, FORMATTED_LAYOUT_RES,
-                    grid.numColumns, grid.numRows);
+                    (int) grid.numColumns, (int) grid.numRows);
             layoutId = targetRes.getIdentifier(layoutName, "xml", pkg);
         }
 
@@ -345,7 +345,6 @@ public class AutoInstallsLayout {
                                 new String[] { packageName });
                         cn = new ComponentName(packages[0], className);
                         info = mPackageManager.getActivityInfo(cn, 0);
-
                     }
                     final Intent intent = new Intent(Intent.ACTION_MAIN, null)
                         .addCategory(Intent.CATEGORY_LAUNCHER)
@@ -677,7 +676,7 @@ public class AutoInstallsLayout {
         return value;
     }
 
-    public interface LayoutParserCallback {
+    public static interface LayoutParserCallback {
         long generateNewItemId();
 
         long insertAndCheck(SQLiteDatabase db, ContentValues values);

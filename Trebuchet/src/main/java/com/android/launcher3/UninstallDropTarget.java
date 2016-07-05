@@ -115,7 +115,7 @@ public class UninstallDropTarget extends ButtonDropTarget {
     /**
      * Interface defining an object that can provide uninstallable drag objects.
      */
-    public interface UninstallSource {
+    public static interface UninstallSource {
 
         /**
          * A pending uninstall operation was complete.

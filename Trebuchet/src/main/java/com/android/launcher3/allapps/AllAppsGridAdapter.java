@@ -297,7 +297,10 @@ public class AllAppsGridAdapter extends RecyclerView.Adapter<AllAppsGridAdapter.
             }
             // Ensure we have a holder position
             int pos = holder.getPosition();
-            return !(pos < 0 || pos >= items.size());
+            if (pos < 0 || pos >= items.size()) {
+                return false;
+            }
+            return true;
         }
 
         /**
@@ -318,8 +321,11 @@ public class AllAppsGridAdapter extends RecyclerView.Adapter<AllAppsGridAdapter.
             AlphabeticalAppsList.AdapterItem item = items.get(pos);
 
             // Ensure it's an icon
-            return !(item.viewType != ICON_VIEW_TYPE && item.viewType != PREDICTION_ICON_VIEW_TYPE);
+            if (item.viewType != ICON_VIEW_TYPE && item.viewType != PREDICTION_ICON_VIEW_TYPE) {
+                return false;
+            }
 
+            return true;
         }
     }
 

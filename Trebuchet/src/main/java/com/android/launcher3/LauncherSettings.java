@@ -26,88 +26,88 @@ import com.android.launcher3.config.ProviderConfig;
  */
 public class LauncherSettings {
     /** Columns required on table staht will be subject to backup and restore. */
-    interface ChangeLogColumns extends BaseColumns {
+    static interface ChangeLogColumns extends BaseColumns {
         /**
          * The time of the last update to this row.
          * <P>Type: INTEGER</P>
          */
-        String MODIFIED = "modified";
+        public static final String MODIFIED = "modified";
     }
 
-    interface BaseLauncherColumns extends ChangeLogColumns {
+    static interface BaseLauncherColumns extends ChangeLogColumns {
         /**
          * Descriptive name of the gesture that can be displayed to the user.
          * <P>Type: TEXT</P>
          */
-        String TITLE = "title";
+        public static final String TITLE = "title";
 
         /**
          * Folder Hidden status
          */
-        String HIDDEN = "hidden";
+        public static final String HIDDEN = "hidden";
 
         /**
          * Folder subtype, used for Remote Folders
          */
-        String SUBTYPE = "subType";
+        static final String SUBTYPE = "subType";
         /**
          * The Intent URL of the gesture, describing what it points to. This
          * value is given to {@link android.content.Intent#parseUri(String, int)} to create
          * an Intent that can be launched.
          * <P>Type: TEXT</P>
          */
-        String INTENT = "intent";
+        public static final String INTENT = "intent";
 
         /**
          * The type of the gesture
          *
          * <P>Type: INTEGER</P>
          */
-        String ITEM_TYPE = "itemType";
+        public static final String ITEM_TYPE = "itemType";
 
         /**
          * The gesture is an application
          */
-        int ITEM_TYPE_APPLICATION = 0;
+        public static final int ITEM_TYPE_APPLICATION = 0;
 
         /**
          * The gesture is an application created shortcut
          */
-        int ITEM_TYPE_SHORTCUT = 1;
+        public static final int ITEM_TYPE_SHORTCUT = 1;
 
         /**
          * The icon type.
          * <P>Type: INTEGER</P>
          */
-        String ICON_TYPE = "iconType";
+        public static final String ICON_TYPE = "iconType";
 
         /**
          * The icon is a resource identified by a package name and an integer id.
          */
-        int ICON_TYPE_RESOURCE = 0;
+        public static final int ICON_TYPE_RESOURCE = 0;
 
         /**
          * The icon is a bitmap.
          */
-        int ICON_TYPE_BITMAP = 1;
+        public static final int ICON_TYPE_BITMAP = 1;
 
         /**
          * The icon package name, if icon type is ICON_TYPE_RESOURCE.
          * <P>Type: TEXT</P>
          */
-        String ICON_PACKAGE = "iconPackage";
+        public static final String ICON_PACKAGE = "iconPackage";
 
         /**
          * The icon resource id, if icon type is ICON_TYPE_RESOURCE.
          * <P>Type: TEXT</P>
          */
-        String ICON_RESOURCE = "iconResource";
+        public static final String ICON_RESOURCE = "iconResource";
 
         /**
          * The custom icon bitmap, if icon type is ICON_TYPE_BITMAP.
          * <P>Type: BLOB</P>
          */
-        String ICON = "icon";
+        public static final String ICON = "icon";
     }
 
     /**

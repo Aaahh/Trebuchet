@@ -19,14 +19,20 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.util.Log;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.InsetDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.text.Selection;
 import android.text.SpannableStringBuilder;
 import android.text.method.TextKeyListener;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -51,7 +57,10 @@ import com.android.launcher3.Workspace;
 import com.android.launcher3.settings.SettingsProvider;
 import com.android.launcher3.util.ComponentKey;
 import com.android.launcher3.util.Thunk;
+import android.graphics.Color;
 
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -403,8 +412,10 @@ public class AllAppsContainerView extends BaseContainerView implements DragSourc
                 padding.right, 0);
         Rect bgPadding = new Rect();
         background.getPadding(bgPadding);
-        mContainerView.setBackground(background);
-        mRevealView.setBackground(background.getConstantState().newDrawable());
+        //mContainerView.setBackground(background);
+        //mRevealView.setBackground(background.getConstantState().newDrawable());
+        mContainerView.setBackgroundColor(Color.TRANSPARENT);
+        mRevealView.setBackgroundColor(Color.TRANSPARENT);
         mAppsRecyclerView.updateBackgroundPadding(bgPadding);
         mAdapter.updateBackgroundPadding(bgPadding);
 

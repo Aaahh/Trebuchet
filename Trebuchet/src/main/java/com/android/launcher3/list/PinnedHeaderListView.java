@@ -21,6 +21,7 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -445,7 +446,7 @@ public class PinnedHeaderListView extends AutoScrollListView
             return true;
         }
         return super.onTouchEvent(ev);
-    }
+    };
 
     private boolean smoothScrollToPartition(int partition) {
         final int position = mAdapter.getScrollPositionForHeader(partition);

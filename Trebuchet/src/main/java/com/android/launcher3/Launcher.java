@@ -108,7 +108,6 @@ import com.android.launcher3.compat.LauncherActivityInfoCompat;
 import com.android.launcher3.compat.LauncherAppsCompat;
 import com.android.launcher3.compat.UserHandleCompat;
 import com.android.launcher3.compat.UserManagerCompat;
-import com.android.launcher3.effects.BaseEffectAnimation;
 import com.android.launcher3.list.SettingsPinnedHeaderAdapter;
 import com.android.launcher3.model.WidgetsModel;
 import com.android.launcher3.settings.SettingsProvider;
@@ -246,7 +245,7 @@ public class Launcher extends Activity
     private static final int ON_ACTIVITY_RESULT_ANIMATION_DELAY = 500;
     private static final int ACTIVITY_START_DELAY = 1000;
 
-    private HashMap<Integer, Integer> mItemIdToViewId = new HashMap<>();
+    private HashMap<Integer, Integer> mItemIdToViewId = new HashMap<Integer, Integer>();
     private static final AtomicInteger sNextGeneratedId = new AtomicInteger(1);
 
     // How long to wait before the new-shortcut animation automatically pans the workspace
@@ -269,7 +268,6 @@ public class Launcher extends Activity
     private DragController mDragController;
     private View mWeightWatcher;
     private DynamicGridSizeFragment mDynamicGridSizeFragment;
-    private EffectSettingFragment mEffectSettingFragment;
 
     protected static RemoteFolderManager sRemoteFolderManager;
 
@@ -1036,7 +1034,7 @@ public class Launcher extends Activity
      */
     private long ensurePendingDropLayoutExists(long screenId) {
         CellLayout dropLayout =
-                mWorkspace.getScreenWithId(screenId);
+                (CellLayout) mWorkspace.getScreenWithId(screenId);
         if (dropLayout == null) {
             // it's possible that the add screen was removed because it was
             // empty and a re-bind occurred
@@ -1049,7 +1047,7 @@ public class Launcher extends Activity
 
     @Thunk void completeTwoStageWidgetDrop(final int resultCode, final int appWidgetId) {
         CellLayout cellLayout =
-                mWorkspace.getScreenWithId(mPendingAddInfo.screenId);
+                (CellLayout) mWorkspace.getScreenWithId(mPendingAddInfo.screenId);
         Runnable onCompleteRunnable = null;
         int animationType = 0;
 
@@ -1217,17 +1215,9 @@ public class Launcher extends Activity
         Fragment gridFragment = getFragmentManager().findFragmentByTag(
                 DynamicGridSizeFragment.DYNAMIC_GRID_SIZE_FRAGMENT);
         if (gridFragment != null) {
-            mDynamicGridSizeFragment.setSize();
+            ((DynamicGridSizeFragment) gridFragment).setSize();
             unlockScreenOrientation(true);
         }
-
-        Fragment effectFragment = getFragmentManager().findFragmentByTag(
-                EffectSettingFragment.EFFECT_SETTING_FRAGMENT);
-        if (effectFragment != null) {
-            mEffectSettingFragment.setEffect();
-            unlockScreenOrientation(true);
-        }
-
     }
 
     @Override
@@ -1254,13 +1244,13 @@ public class Launcher extends Activity
     public interface CustomContentCallbacks {
         // Custom content is completely shown. {@code fromResume} indicates whether this was caused
         // by a onResume or by scrolling otherwise.
-        void onShow(boolean fromResume);
+        public void onShow(boolean fromResume);
 
         // Custom content is completely hidden
-        void onHide();
+        public void onHide();
 
         // Custom content scroll progress changed. From 0 (not showing) to 1 (fully showing).
-        void onScrollProgressChanged(float progress);
+        public void onScrollProgressChanged(float progress);
 
         // Indicates whether the user is allowed to scroll away from the custom content.
         boolean isScrollingAllowed();
@@ -1271,41 +1261,41 @@ public class Launcher extends Activity
         /**
          * Touch interaction leading to overscroll has begun
          */
-        void onScrollInteractionBegin();
+        public void onScrollInteractionBegin();
 
         /**
          * Touch interaction related to overscroll has ended
          */
-        void onScrollInteractionEnd();
+        public void onScrollInteractionEnd();
 
         /**
          * Scroll progress, between 0 and 100, when the user scrolls beyond the leftmost
          * screen (or in the case of RTL, the rightmost screen).
          */
-        void onScrollChange(int progress, boolean rtl);
+        public void onScrollChange(int progress, boolean rtl);
 
         /**
          * Screen has stopped scrolling
          */
-        void onScrollSettled();
+        public void onScrollSettled();
 
         /**
          * This method can be called by the Launcher in order to force the LauncherOverlay
          * to exit fully immersive mode.
          */
-        void forceExitFullImmersion();
+        public void forceExitFullImmersion();
     }
 
     public interface LauncherSearchCallbacks {
         /**
          * Called when the search overlay is shown.
          */
-        void onSearchOverlayOpened();
+        public void onSearchOverlayOpened();
 
         /**
          * Called when the search overlay is dismissed.
          */
-        void onSearchOverlayClosed();
+        public void onSearchOverlayClosed();
     }
 
     public interface LauncherOverlayCallbacks {
@@ -1313,7 +1303,7 @@ public class Launcher extends Activity
          * This method indicates whether a call to {@link #enterFullImmersion()} will succeed,
          * however it doesn't modify any state within the launcher.
          */
-        boolean canEnterFullImmersion();
+        public boolean canEnterFullImmersion();
 
         /**
          * Should be called to tell Launcher that the LauncherOverlay will take over interaction,
@@ -1324,13 +1314,13 @@ public class Launcher extends Activity
          *          handling all interaction. If false, the LauncherOverlay should cancel any
          *
          */
-        boolean enterFullImmersion();
+        public boolean enterFullImmersion();
 
         /**
          * Must be called when exiting fully immersive mode. Indicates to Launcher that it has
          * full control over UI and state.
          */
-        void exitFullImmersion();
+        public void exitFullImmersion();
     }
 
     class LauncherOverlayCallbacksImpl implements LauncherOverlayCallbacks {
@@ -1933,25 +1923,13 @@ public class Launcher extends Activity
     }
 
     /**
-     * Replaces currently added fragments in the launcher layout with a
-     * {@link EffectSettingFragment}.
-     */
-    public void onClickEffectSettingButton() {
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        lockScreenOrientation();
-        mEffectSettingFragment = new EffectSettingFragment();
-        fragmentTransaction.replace(R.id.launcher, mEffectSettingFragment,
-                EffectSettingFragment.EFFECT_SETTING_FRAGMENT);
-        fragmentTransaction.commit();
-    }
-
-    /**
      * If the new grid size is different from the current grid size, the launcher will be reloaded
      * and the overview settings panel updated with the new grid size value.
      * @param size The new grid size to set the workspace to.
      */
     public void setDynamicGridSize(InvariantDeviceProfile.GridSize size) {
+        if (size == null) return;
+
         int gridSize = SettingsProvider.getIntCustomDefault(this,
                 SettingsProvider.SETTINGS_UI_DYNAMIC_GRID_SIZE, 0);
         boolean customValuesChanged = false;
@@ -1969,7 +1947,7 @@ public class Launcher extends Activity
         if (gridSize != size.getValue() || customValuesChanged) {
             SettingsProvider.putInt(this,
                     SettingsProvider.SETTINGS_UI_DYNAMIC_GRID_SIZE, size.getValue());
-            reloadLauncher(false, true);
+            reloadLauncher(true, true);
         }
 
         // Must be called after reload and before settings invalidation.
@@ -1995,35 +1973,6 @@ public class Launcher extends Activity
         anim.start();
         anim.addListener(mAnimatorListener);
     }
-
-
-    public void setLauncherEffect(BaseEffectAnimation.Effect effect) {
-        int lastEffectType = SettingsProvider.getIntCustomDefault(this,
-                SettingsProvider.SETTINGS_UI_WORKSPACE_EFFECT, 0);
-
-        if (lastEffectType != effect.getEffectType()) {
-            SettingsProvider.putInt(this,
-                    SettingsProvider.SETTINGS_UI_WORKSPACE_EFFECT, effect.getEffectType());
-            BaseEffectAnimation.setEffectAnimation(mWorkspace,effect);
-        }
-
-        mOverviewSettingsPanel.notifyDataSetInvalidated();
-
-        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        Configuration config = getResources().getConfiguration();
-        if(config.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL) {
-            fragmentTransaction.setCustomAnimations(0, R.anim.exit_out_left);
-        } else {
-            fragmentTransaction.setCustomAnimations(0, R.anim.exit_out_right);
-        }
-        fragmentTransaction.remove(mEffectSettingFragment).commit();
-        unlockScreenOrientation(true);
-        mDarkPanel.setVisibility(View.VISIBLE);
-        ObjectAnimator anim = ObjectAnimator.ofFloat(mDarkPanel, "alpha", 0.3f, 0.0f);
-        anim.start();
-        anim.addListener(mAnimatorListener);
-    }
-
 
     @Override
     public void onAttachedToWindow() {
@@ -2868,14 +2817,7 @@ public class Launcher extends Activity
             Fragment gridFragment = getFragmentManager().findFragmentByTag(
                     DynamicGridSizeFragment.DYNAMIC_GRID_SIZE_FRAGMENT);
             if (gridFragment != null) {
-                mDynamicGridSizeFragment.setSize();
-                unlockScreenOrientation(true);
-            }
-
-            Fragment effectFragment = getFragmentManager().findFragmentByTag(
-                    EffectSettingFragment.EFFECT_SETTING_FRAGMENT);
-            if (effectFragment != null) {
-                mEffectSettingFragment.setEffect();
+                ((DynamicGridSizeFragment) gridFragment).setSize();
                 unlockScreenOrientation(true);
             }
             else {
@@ -3623,7 +3565,7 @@ public class Launcher extends Activity
         // There was a one-off crash where the folder had a parent already.
         if (folder.getParent() == null) {
             mDragLayer.addView(folder);
-            mDragController.addDropTarget(folder);
+            mDragController.addDropTarget((DropTarget) folder);
         } else {
             Log.w(TAG, "Opening folder (" + folder + ") which already has a parent (" +
                     folder.getParent() + ").");
@@ -4631,6 +4573,7 @@ public class Launcher extends Activity
         mWorkspace.stripEmptyScreens();
 
         sRemoteFolderManager.bindFinished();
+        bindSearchProviderChanged();
     }
 
     private void sendLoadingCompleteBroadcastIfNecessary() {
@@ -4974,7 +4917,11 @@ public class Launcher extends Activity
         PackageManager pm = getPackageManager();
         try {
             ApplicationInfo ai = pm.getApplicationInfo(getComponentName().getPackageName(), 0);
-            return (ai.flags & ApplicationInfo.FLAG_SYSTEM) != 0;
+            if ((ai.flags & ApplicationInfo.FLAG_SYSTEM) != 0) {
+                return true;
+            } else {
+                return false;
+            }
         } catch (NameNotFoundException e) {
             e.printStackTrace();
             return false;
@@ -5399,6 +5346,6 @@ public class Launcher extends Activity
 }
 
 interface DebugIntents {
-    String DELETE_DATABASE = "com.android.launcher3.action.DELETE_DATABASE";
-    String MIGRATE_DATABASE = "com.android.launcher3.action.MIGRATE_DATABASE";
+    static final String DELETE_DATABASE = "com.android.launcher3.action.DELETE_DATABASE";
+    static final String MIGRATE_DATABASE = "com.android.launcher3.action.MIGRATE_DATABASE";
 }

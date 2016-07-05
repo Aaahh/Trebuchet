@@ -1,14 +1,14 @@
 package com.android.launcher3;
 
 public interface CustomAppWidget {
-    String getLabel();
-    int getPreviewImage();
-    int getIcon();
-    int getWidgetLayout();
+    public String getLabel();
+    public int getPreviewImage();
+    public int getIcon();
+    public int getWidgetLayout();
 
-    int getSpanX();
-    int getSpanY();
-    int getMinSpanX();
-    int getMinSpanY();
-    int getResizeMode();
+    public int getSpanX();
+    public int getSpanY();
+    public int getMinSpanX();
+    public int getMinSpanY();
+    public int getResizeMode();
 }

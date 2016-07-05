@@ -39,6 +39,7 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PaintFlagsDrawFilter;
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -62,6 +63,7 @@ import com.android.launcher3.settings.SettingsProvider;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -284,8 +286,8 @@ public final class Utilities {
             scale *= v0.getScaleX();
         }
 
-        coord[0] = Math.round(pt[0]);
-        coord[1] = Math.round(pt[1]);
+        coord[0] = (int) Math.round(pt[0]);
+        coord[1] = (int) Math.round(pt[1]);
         return scale;
     }
 
@@ -324,8 +326,8 @@ public final class Utilities {
             }
         }
 
-        coord[0] = Math.round(pt[0]);
-        coord[1] = Math.round(pt[1]);
+        coord[0] = (int) Math.round(pt[0]);
+        coord[1] = (int) Math.round(pt[1]);
         return scale;
     }
 
@@ -526,6 +528,29 @@ public final class Utilities {
         }
     }
 
+    /*
+     * Finds all system apks which had a broadcast receiver listening to a particular action.
+     * @param action intent action used to find the apk
+     * @return a list of pairs of apk package name and the resources.
+     */
+    static List<Pair<String, Resources>> findSystemApks(String action, PackageManager pm) {
+        final Intent intent = new Intent(action);
+        List<Pair<String, Resources>> systemApks = new ArrayList<Pair<String, Resources>>();
+        for (ResolveInfo info : pm.queryBroadcastReceivers(intent, 0)) {
+            if (info.activityInfo != null &&
+                    (info.activityInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0) {
+                final String packageName = info.activityInfo.packageName;
+                try {
+                    final Resources res = pm.getResourcesForApplication(packageName);
+                    systemApks.add(Pair.create(packageName, res));
+                } catch (NameNotFoundException e) {
+                    Log.w(TAG, "Failed to find resources for " + packageName);
+                }
+            }
+        }
+        return systemApks;
+    }
+
     /**
      * Returns a widget with category {@link AppWidgetProviderInfo#WIDGET_CATEGORY_SEARCHBOX}
      * provided by the same package which is set to be global search activity.
@@ -690,7 +715,7 @@ public final class Utilities {
                 Set<String> keys = extras.keySet();
                 return keys.size() == 1 && keys.contains(ItemInfo.EXTRA_PROFILE);
             }
-        }
+        };
         return false;
     }
 
@@ -698,12 +723,45 @@ public final class Utilities {
         return (size / metrics.density);
     }
     public static int pxFromDp(float size, DisplayMetrics metrics) {
-        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+        return (int) Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                 size, metrics));
     }
     public static int pxFromSp(float size, DisplayMetrics metrics) {
-        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,
+        return (int) Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,
                 size, metrics));
+    }
+
+    public static Point caluclateFolderContentDimensions(int count, int maxCountX, int maxCountY) {
+        final Point point = new Point();
+        final int maxItemsPerPage = maxCountX * maxCountY;
+        boolean done;
+        if (count >= maxItemsPerPage) {
+            point.x = maxCountX;
+            point.y = maxCountY;
+            done = true;
+        } else {
+            done = false;
+        }
+
+        while (!done) {
+            int oldCountX = point.x;
+            int oldCountY = point.y;
+            if (point.x * point.y < count) {
+                // Current grid is too small, expand it
+                if ((point.x <= point.y || point.y == maxCountY) && point.x < maxCountX) {
+                    point.x++;
+                } else if (point.y < maxCountY) {
+                    point.y++;
+                }
+                if (point.y == 0) point.y++;
+            } else if ((point.y - 1) * point.x >= count && point.y >= point.x) {
+                point.y = Math.max(0, point.y - 1);
+            } else if ((point.x - 1) * point.y >= count) {
+                point.x = Math.max(0, point.x - 1);
+            }
+            done = point.x == oldCountX && point.y == oldCountY;
+        }
+        return point;
     }
 
     public static String createDbSelectionQuery(String columnName, Iterable<?> values) {

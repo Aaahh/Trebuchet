@@ -38,7 +38,7 @@ public class LauncherAppsCompatVL extends LauncherAppsCompat {
 
     private LauncherApps mLauncherApps;
 
-    private final Map<OnAppsChangedCallbackCompat, WrappedCallback> mCallbacks
+    private Map<OnAppsChangedCallbackCompat, WrappedCallback> mCallbacks
             = new HashMap<OnAppsChangedCallbackCompat, WrappedCallback>();
 
     LauncherAppsCompatVL(Context context) {

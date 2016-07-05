@@ -25,14 +25,14 @@ import android.animation.TimeInterpolator;
 import android.annotation.SuppressLint;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 
 import com.android.launcher3.allapps.AllAppsContainerView;
-import com.android.launcher3.util.LogUtil;
-import com.android.launcher3.util.Thunk;
 import com.android.launcher3.util.UiThreadCircularReveal;
+import com.android.launcher3.util.Thunk;
 import com.android.launcher3.widget.WidgetsContainerView;
 
 import java.util.HashMap;
@@ -189,7 +189,7 @@ public class LauncherStateTransitionAnimation {
         if (toWorkspaceState != Workspace.State.NORMAL &&
                 toWorkspaceState != Workspace.State.SPRING_LOADED &&
                 toWorkspaceState != Workspace.State.OVERVIEW) {
-            LogUtil.e(TAG, "Unexpected call to startAnimationToWorkspace");
+            Log.e(TAG, "Unexpected call to startAnimationToWorkspace");
         }
 
         if (fromState == Launcher.State.APPS || fromState == Launcher.State.APPS_SPRING_LOADED) {

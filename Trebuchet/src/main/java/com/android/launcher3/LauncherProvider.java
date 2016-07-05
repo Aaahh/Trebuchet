@@ -63,7 +63,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
 public class LauncherProvider extends ContentProvider {
@@ -1125,7 +1124,7 @@ public class LauncherProvider extends ContentProvider {
 
         public void checkId(String table, ContentValues values) {
             long id = values.getAsLong(LauncherSettings.BaseLauncherColumns._ID);
-            if (Objects.equals(table, LauncherProvider.TABLE_WORKSPACE_SCREENS)) {
+            if (table == LauncherProvider.TABLE_WORKSPACE_SCREENS) {
                 mMaxScreenId = Math.max(id, mMaxScreenId);
             }  else {
                 mMaxItemId = Math.max(id, mMaxItemId);
@@ -1187,7 +1186,10 @@ public class LauncherProvider extends ContentProvider {
 
             // Add screen id if not present
             long screenId = values.getAsLong(LauncherSettings.Favorites.SCREEN);
-            return addScreenIdIfNecessary(screenId);
+            if (!addScreenIdIfNecessary(screenId)) {
+                return false;
+            }
+            return true;
         }
 
         // Returns true of screen id exists, or if successfully added
@@ -1316,8 +1318,8 @@ public class LauncherProvider extends ContentProvider {
 
                         final LauncherAppState app = LauncherAppState.getInstance();
                         final InvariantDeviceProfile profile = app.getInvariantDeviceProfile();
-                        final int width = profile.numColumns;
-                        final int height = profile.numRows;
+                        final int width = (int) profile.numColumns;
+                        final int height = (int) profile.numRows;
                         final int hotseatWidth = (int) profile.numHotseatIcons;
 
                         final HashSet<String> seenIntents = new HashSet<String>(c.getCount());

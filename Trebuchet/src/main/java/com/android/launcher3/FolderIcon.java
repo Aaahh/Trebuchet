@@ -539,8 +539,8 @@ public class FolderIcon extends FrameLayout implements FolderListener {
 
             int[] center = new int[2];
             float scale = getLocalCenterForIndex(index, center);
-            center[0] = Math.round(scaleRelativeToDragLayer * center[0]);
-            center[1] = Math.round(scaleRelativeToDragLayer * center[1]);
+            center[0] = (int) Math.round(scaleRelativeToDragLayer * center[0]);
+            center[1] = (int) Math.round(scaleRelativeToDragLayer * center[1]);
 
             to.offset(center[0] - animateView.getMeasuredWidth() / 2,
                       center[1] - animateView.getMeasuredHeight() / 2);
@@ -640,8 +640,8 @@ public class FolderIcon extends FrameLayout implements FolderListener {
         float offsetX = mParams.transX + (mParams.scale * mIntrinsicIconSize) / 2;
         float offsetY = mParams.transY + (mParams.scale * mIntrinsicIconSize) / 2;
 
-        center[0] = Math.round(offsetX);
-        center[1] = Math.round(offsetY);
+        center[0] = (int) Math.round(offsetX);
+        center[1] = (int) Math.round(offsetY);
         return mParams.scale;
     }
 
@@ -699,7 +699,6 @@ public class FolderIcon extends FrameLayout implements FolderListener {
         canvas.restore();
     }
 
-    @SuppressWarnings("SuspiciousMethodCalls")
     @Override
     protected void dispatchDraw(Canvas canvas) {
         super.dispatchDraw(canvas);

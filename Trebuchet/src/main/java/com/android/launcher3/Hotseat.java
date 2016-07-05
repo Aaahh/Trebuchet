@@ -17,6 +17,8 @@
 package com.android.launcher3;
 
 import android.content.Context;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.AttributeSet;
@@ -141,7 +143,10 @@ public class Hotseat extends FrameLayout
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         // We don't want any clicks to go through to the hotseat unless the workspace is in
         // the normal state.
-        return mLauncher.getWorkspace().workspaceInModalState();
+        if (mLauncher.getWorkspace().workspaceInModalState()) {
+            return true;
+        }
+        return false;
     }
 
     @Override

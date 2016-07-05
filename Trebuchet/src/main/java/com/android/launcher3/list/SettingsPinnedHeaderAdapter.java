@@ -14,18 +14,15 @@ import android.view.ViewGroup;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.android.launcher3.InvariantDeviceProfile;
 import com.android.launcher3.Launcher;
 import com.android.launcher3.LauncherSettings;
 import com.android.launcher3.OverviewSettingsPanel;
 import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
-import com.android.launcher3.effects.BaseEffectAnimation;
 import com.android.launcher3.settings.SettingsProvider;
 
 public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
-
     public static final String ACTION_SEARCH_BAR_VISIBILITY_CHANGED =
             "cyanogenmod.intent.action.SEARCH_BAR_VISIBILITY_CHANGED";
 
@@ -134,9 +131,6 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
                                 SettingsProvider.SETTINGS_UI_HOMESCREEN_REMOTE_FOLDER,
                                 R.bool.preferences_interface_homescreen_remote_folder_default);
                         setSettingSwitch(stateView, settingSwitch, current);
-                        break;
-                    case 6:
-                        updateWorkspaceAnimSettingsItem(stateView, settingSwitch);
                         break;
                     default:
                         hideStates(stateView, settingSwitch);
@@ -255,16 +249,6 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
         setStateText(stateView, settingSwitch, state);
     }
 
-    public void updateWorkspaceAnimSettingsItem(TextView stateView, Switch settingSwitch) {
-
-        BaseEffectAnimation.Effect effect = BaseEffectAnimation.Effect.getEffectForType(
-                SettingsProvider.getIntCustomDefault(mLauncher,
-                        SettingsProvider.SETTINGS_UI_WORKSPACE_EFFECT, 0));
-        String state = mLauncher.getResources().getString(BaseEffectAnimation.Effect.getEffectStringResId(effect.getEffectType()));
-
-        setStateText(stateView, settingSwitch, state);
-    }
-
     OnClickListener mSettingsItemListener = new OnClickListener() {
 
         @Override
@@ -317,9 +301,6 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
                                     R.bool.preferences_interface_homescreen_remote_folder_default,
                                     false);
                             mLauncher.getRemoteFolderManager().onSettingChanged();
-                            break;
-                        case 6:
-                            mLauncher.onClickEffectSettingButton();
                             break;
                     }
                     break;

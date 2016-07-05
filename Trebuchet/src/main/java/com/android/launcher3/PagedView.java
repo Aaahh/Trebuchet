@@ -48,7 +48,6 @@ import android.view.accessibility.AccessibilityManager;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.view.animation.Interpolator;
 
-import com.android.launcher3.effects.BaseEffectAnimation;
 import com.android.launcher3.util.LauncherEdgeEffect;
 import com.android.launcher3.util.Thunk;
 
@@ -94,7 +93,7 @@ public abstract class PagedView extends ViewGroup implements ViewGroup.OnHierarc
     protected int mMinFlingVelocity;
     protected int mMinSnapVelocity;
 
-    public float mDensity;
+    protected float mDensity;
     protected float mSmoothingTime;
     protected float mTouchX;
 
@@ -206,8 +205,6 @@ public abstract class PagedView extends ViewGroup implements ViewGroup.OnHierarc
     // Edge effect
     private final LauncherEdgeEffect mEdgeGlowLeft = new LauncherEdgeEffect();
     private final LauncherEdgeEffect mEdgeGlowRight = new LauncherEdgeEffect();
-
-    protected BaseEffectAnimation mEffectAnimation;
 
     public interface PageSwitchListener {
         void onPageSwitch(View newPage, int newPageIndex);
@@ -978,46 +975,7 @@ public abstract class PagedView extends ViewGroup implements ViewGroup.OnHierarc
     /**
      * Called when the center screen changes during scrolling.
      */
-    protected void screenScrolled(int screenCenter) {
-        for (int i = 0; i < getChildCount(); i++) {
-            View child = getChildAt(i);
-            if (child != null) {
-                float scrollProgress = getScrollProgress(screenCenter, child, i);
-                if (mEffectAnimation != null) {
-                    mEffectAnimation.screenScrolled(child, scrollProgress);
-                }
-            }
-        }
-
-    }
-
-    public void setEffectAnimation(BaseEffectAnimation effectAnimation) {
-        this.mEffectAnimation = effectAnimation;
-        // Reset scroll transforms to normal
-        for (int i = 0; i < getChildCount(); i++) {
-            View v = getPageAt(i);
-            if (v != null) {
-                v.setPivotX(v.getMeasuredWidth() * 0.5f);
-                v.setPivotY(v.getMeasuredHeight() * 0.5f);
-                v.setRotation(0);
-                v.setRotationX(0);
-                v.setRotationY(0);
-                v.setScaleX(1f);
-                v.setScaleY(1f);
-                v.setTranslationX(0f);
-                v.setTranslationY(0f);
-                v.setVisibility(VISIBLE);
-                v.setAlpha(1f);
-            }
-        }
-
-    }
-    /**
-     * Note: this is a reimplementation of View.isLayoutRtl() since that is currently hidden api.
-     */
-    public boolean isLayoutRtl() {
-        return (getLayoutDirection() == LAYOUT_DIRECTION_RTL);
-    }
+    protected void screenScrolled(int screenCenter) { }
 
     @Override
     public void onChildViewAdded(View parent, View child) {
@@ -1635,7 +1593,7 @@ public abstract class PagedView extends ViewGroup implements ViewGroup.OnHierarc
             int minIndex = indexOfChild(mDragView);
             for (int i = mTempVisiblePagesRange[0]; i <= mTempVisiblePagesRange[1]; i++) {
                 View page = getPageAt(i);
-                int pageX = page.getLeft() + page.getMeasuredWidth() / 2;
+                int pageX = (int) (page.getLeft() + page.getMeasuredWidth() / 2);
                 int d = Math.abs(dragX - pageX);
                 if (d < minDistance) {
                     minIndex = i;
@@ -2018,7 +1976,7 @@ public abstract class PagedView extends ViewGroup implements ViewGroup.OnHierarc
         int screenCenter = getViewportOffsetX() + getScrollX() + (getViewportWidth() / 2);
         final int childCount = getChildCount();
         for (int i = 0; i < childCount; ++i) {
-            View layout = getPageAt(i);
+            View layout = (View) getPageAt(i);
             int childWidth = layout.getMeasuredWidth();
             int halfChildWidth = (childWidth / 2);
             int childCenter = getViewportOffsetX() + getChildOffset(i) + halfChildWidth;
@@ -2313,7 +2271,7 @@ public abstract class PagedView extends ViewGroup implements ViewGroup.OnHierarc
             public void run() {
                 onCompleteRunnable.run();
                 enableFreeScroll();
-            }
+            };
         };
 
         mPostReorderingPreZoomInRemainingAnimationCount =

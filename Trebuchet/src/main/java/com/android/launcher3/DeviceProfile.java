@@ -282,8 +282,8 @@ public class DeviceProfile {
                 int width = getCurrentWidth();
                 // XXX: If the icon size changes across orientations, we will have to take
                 //      that into account here too.
-                int gap = (width - 2 * edgeMarginPx -
-                        (inv.numColumns * cellWidthPx)) / (2 * (inv.numColumns + 1));
+                int gap = (int) ((width - 2 * edgeMarginPx -
+                        (inv.numColumns * cellWidthPx)) / (2 * (inv.numColumns + 1)));
                 bounds.set(edgeMarginPx + gap, getSearchBarTopOffset(),
                         availableWidthPx - (edgeMarginPx + gap),
                         searchBarVisible ? searchBarSpaceHeightPx : edgeMarginPx);
@@ -323,7 +323,7 @@ public class DeviceProfile {
                 int availableWidth = Math.max(0, width - (int) ((inv.numColumns * cellWidthPx) +
                         (inv.numColumns * gapScale * cellWidthPx)));
                 int availableHeight = Math.max(0, height - paddingTop - paddingBottom
-                        - 2 * inv.numRows * cellHeightPx);
+                        - (int) (2 * inv.numRows * cellHeightPx));
                 padding.set(availableWidth / 2, paddingTop + availableHeight / 2,
                         availableWidth / 2, paddingBottom + availableHeight / 2);
             } else {

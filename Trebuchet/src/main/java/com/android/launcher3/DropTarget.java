@@ -25,9 +25,9 @@ import android.graphics.Rect;
  */
 public interface DropTarget {
 
-    String TAG = "DropTarget";
+    public static final String TAG = "DropTarget";
 
-    class DragObject {
+    public static class DragObject {
         public int x = -1;
         public int y = -1;
 

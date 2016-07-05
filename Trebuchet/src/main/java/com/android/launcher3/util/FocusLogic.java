@@ -22,6 +22,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.launcher3.CellLayout;
+import com.android.launcher3.DeviceProfile;
+import com.android.launcher3.Launcher;
+import com.android.launcher3.LauncherAppState;
 import com.android.launcher3.ShortcutAndWidgetContainer;
 
 import java.util.Arrays;

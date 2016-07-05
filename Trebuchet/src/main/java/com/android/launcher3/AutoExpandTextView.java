@@ -20,6 +20,7 @@ package com.android.launcher3;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.TextPaint;
@@ -196,11 +197,14 @@ public class AutoExpandTextView extends TextView {
 
         SpannableStringBuilder builder = new SpannableStringBuilder();
         for (HighlightedText highlightText : sections) {
-            SpannableString spannable = new SpannableString(highlightText.mText.substring(0, 1));
-            spannable.setSpan(
-                    new ForegroundColorSpan(highlightText.mHighlight ? highlightColor : grayColor),
-                    0, spannable.length(), 0);
-            builder.append(spannable);
+            if (!TextUtils.isEmpty(highlightText.mText)) {
+                SpannableString spannable =
+                        new SpannableString(highlightText.mText.substring(0, 1));
+                spannable.setSpan(
+                        new ForegroundColorSpan(highlightText.mHighlight ? highlightColor :
+                                grayColor), 0, spannable.length(), 0);
+                builder.append(spannable);
+            }
         }
 
         setText(builder);

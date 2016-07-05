@@ -858,7 +858,7 @@ public class LauncherBackupHelper implements BackupHelper {
         if (isReplaceableHotseatItem(favorite)) {
             if (intent != null && intent.getComponent() != null) {
                 PackageManager pm = mContext.getPackageManager();
-                ActivityInfo activity = null;
+                ActivityInfo activity = null;;
                 try {
                     activity = pm.getActivityInfo(intent.getComponent(), 0);
                 } catch (NameNotFoundException e) {
@@ -1184,8 +1184,12 @@ public class LauncherBackupHelper implements BackupHelper {
         }
         cursor.close();
 
-        return LauncherAppState.getInstanceNoCreate() != null;
+        if (LauncherAppState.getInstanceNoCreate() == null) {
+            // launcher services are unavailable, try again later
+            return false;
+        }
 
+        return true;
     }
 
     private String getUserSelectionArg() {

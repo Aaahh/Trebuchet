@@ -387,6 +387,6 @@ public class LauncherExtension extends Launcher {
             public void setOverlayCallbacks(LauncherOverlayCallbacks callbacks) {
                 mLauncherOverlayCallbacks = callbacks;
             }
-        }
+        };
     }
 }

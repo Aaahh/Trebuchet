@@ -21,7 +21,6 @@ import android.content.Context;
 
 import java.util.ArrayList;
 
-
 public class ProtectedComponentsHelper {
     private static final int FILTER_APPS_SYSTEM_FLAG = 1;
     private static final int FILTER_APPS_DOWNLOADED_FLAG = 2;
